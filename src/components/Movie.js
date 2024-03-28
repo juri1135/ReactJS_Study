@@ -14,16 +14,17 @@ function Movie({
   return (
     //Link to 이용해서 브라우저 새로고침 없이 영화 제목 클릭하면 다른 페이지로 넘어가게 만들기
     <div className={styles.movie}>
-      <p>
+      <div className={styles.mov}>
         <Link basename={process.env.PUBLIC_URL} to={`/movie/${id}`}>
-          <img
-            className={styles.movieImage}
-            src={cover_image}
-            alt={title}
-          ></img>
-          <div className={styles.coverText}>❤️</div>
+          <div class={styles.movieImg}>
+            <img src={cover_image} alt={title}></img>
+          </div>
+
+          <div className={styles.coverText}>
+            <strong>⭐{rating}</strong>
+          </div>
         </Link>
-      </p>
+      </div>
       <p className={styles.movieTitle}>{title}</p>
       <p className={styles.movieStar}>🧭{runtime}m</p>
       <p className={styles.movieStar}>{genres.join(', ')}</p>

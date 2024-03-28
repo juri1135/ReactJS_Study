@@ -24,23 +24,43 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%; /* 이미지 너비에 따라 조정할 수 있습니다. */
-  max-width: 200px; /* 예시로 설정한 최대 너비, 실제 이미지 크기에 맞춰 조정해주세요 */
+  max-width: 250px; /* 예시로 설정한 최대 너비, 실제 이미지 크기에 맞춰 조정해주세요 */
   margin: 0 auto; /* 컨테이너를 중앙에 배치 */
-  position: relative;
+  max-height: 500px;
 }
-.movieCover {
-  width: 100%;
+.mov {
+  margin: 10px auto;
+  position: relative;
+  display: flex;
+}
+.movieImg {
   height: 100%;
   object-fit: cover; /* 이미지 비율을 유지하면서 컨테이너를 꽉 채움 */
 }
 .coverText {
+  height: auto;
+  width: 220px;
+  text-align: center;
+  font-size: xx-large;
   position: absolute;
-  bottom: 70; /* 이미지의 하단에 위치 */
-  right: 0; /* 이미지의 우측에 위치 */
-  background-color: rgba(0, 0, 0, 0.7); /* 반투명 배경 */
-  /*color: white; /* 텍스트 색상 */
+  background-color: #333333c2;
+  top: 50%; /* 상단에서 50% 위치에 배치 */
+  left: 50%; /* 왼쪽에서 50% 위치에 배치 */
+  transform: translate(
+    -50%,
+    225%
+  ); /* X축과 Y축으로 50%만큼 이동하여 중앙에 배치 */
+  color: white; /* 텍스트 색상 */
   padding: 5px; /* 텍스트 주변 여백 */
+}
+.movieStar {
+  display: block; /* 또는 inline-block; 필요에 따라 */
+  width: 100%; /* 필요한 너비 지정 */
+  white-space: nowrap; /* 텍스트를 한 줄로 만듦 */
+  overflow: hidden; /* 넘치는 텍스트 숨김 */
+  text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
+  margin: 3px;
+  text-align: center;
 }
 .movieTitle {
   text-align: center;
@@ -52,8 +72,8 @@ body {
   white-space: nowrap; /* 텍스트를 한 줄로 표시 */
   text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
 }
-.movieStar {
-  margin: 0.5px;
+.movieDetail {
+  text-align: center;
 }
 .movieSearch {
   /* 여기에 movieSearch의 스타일을 정의합니다 */
@@ -68,6 +88,9 @@ body {
   grid-gap: 1rem; /* 그리드 아이템 사이의 간격 설정 */
   padding: 1rem; /* 컨테이너 내부의 패딩 */
   padding: 20;
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 50px;
 }
 @media screen and (max-width: 768px) {
   .moviesContainer {
@@ -79,4 +102,37 @@ body {
   .moviesContainer {
     grid-template-columns: 1fr; /* 화면이 480px 미만일 때 1개 컬럼 */
   }
+}
+.button {
+  transform: translate(30%);
+  background-color: #333;
+  color: #f1f1ee;
+  padding: 3px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+.genreContainer {
+  width: 600px;
+  padding-top: 20px;
+}
+.genreButton {
+  border: 0;
+  font-size: large;
+}
+.genreButton {
+  /*이 속성은 버튼의 배경색(background-color)과 크기 변형(transform)이 변할 때 
+  부드럽게 전환되도록 합니다. 0.3s는 전환에 0.3초가 걸린다는 것을 의미하며, 
+  ease는 시작과 끝에 느리게, 중간에는 빠르게 전환되는 타이밍 함수입니다.*/
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  /* Other styling here */
+}
+
+.genreButton:hover {
+  background-color: #444444ad; /* Change to your preferred hover background color */
+  transform: scale(1.05); /* Slightly enlarges the button */
+}
+
+.selectedGenre {
+  background-color: #6666666b; /* Selected genre button background color */
+  /* Other styling for selected genre button */
 }
