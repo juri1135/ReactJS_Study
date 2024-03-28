@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import App from '../App.module.css';
+import styles from '../Movie.module.css';
 function Detail() {
   //const x=useParams()로 하면 {id:'num'} 형태로 나오는데
   //const {id}=useParams()로 하면 그냥 id값만 딱! 나옴
@@ -22,7 +22,7 @@ function Detail() {
     getMovie();
   }, [id]);
   return (
-    <div className={App.detailContainer}>
+    <div className={styles.detailContainer}>
       {movieDetails ? (
         <div>
           <h1>
