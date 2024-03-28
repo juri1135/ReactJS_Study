@@ -1,11 +1,11 @@
-import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import styles from '../Movie.module.css';
+import { useParams, useNavigate } from 'react-router-dom';
 function Detail() {
   //const x=useParams()로 하면 {id:'num'} 형태로 나오는데
   //const {id}=useParams()로 하면 그냥 id값만 딱! 나옴
   const { id } = useParams();
+  const navigate = useNavigate();
   const [movieDetails, setMovieDetails] = useState(null);
   const [movie, setMovie] = useState(null);
   //Details로 갈 때 params가 id값!!! 왜냐면 App.js에서 경로 설정할 때
@@ -18,6 +18,9 @@ function Detail() {
     setMovieDetails(json);
     setMovie(json.data.movie);
   };
+  const goBack = () => {
+    navigate(-1);
+  };
   useEffect(() => {
     getMovie();
   }, [id]);
@@ -27,6 +30,12 @@ function Detail() {
 
   return (
     <div className={styles.detailContainer} style={backgroundStyle}>
+      {movieDetails ? (
+        <button onClick={goBack} className={styles.back}>
+          ◀ Back
+        </button>
+      ) : null}
+
       {movieDetails ? (
         <div className={styles.detailBox}>
           <img

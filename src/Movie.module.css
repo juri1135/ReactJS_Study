@@ -70,6 +70,13 @@ body {
   height: 100%;
   object-fit: cover; /* 이미지 비율을 유지하면서 컨테이너를 꽉 채움 */
 }
+.back {
+  color: white;
+  font-size: x-large;
+  background-color: #3333335d;
+  border: 0;
+  transform: translate(-400px, -650px);
+}
 .coverText {
   height: auto;
   width: 220px;
