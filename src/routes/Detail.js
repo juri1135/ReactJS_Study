@@ -21,29 +21,44 @@ function Detail() {
   useEffect(() => {
     getMovie();
   }, [id]);
+  const backgroundStyle = movie
+    ? { backgroundImage: `url(${movie.background_image_original})` }
+    : {};
+
   return (
-    <div className={styles.detailContainer}>
+    <div className={styles.detailContainer} style={backgroundStyle}>
       {movieDetails ? (
-        <div>
-          <h1>
-            <Link to={movie.url}>{movieDetails.data.movie.title}</Link>(
-            {movie.year})
-          </h1>
-          <img src={movie.medium_cover_image} alt={movie.title}></img>
-          <p>
-            <strong>Rating:</strong> {movie.rating}, <strong>RunTime:</strong>{' '}
-            {movie.runtime}
-          </p>
-          <p>
-            <strong>genres:</strong> {movie.genres.join(',')}
-          </p>
-          <p>
-            <strong>Intro:</strong> {movie.description_intro}
-          </p>
-          <p>
-            <strong>Full:</strong> {movie.description_full}
-          </p>
-        </div> // Adjust according to your API response structure
+        <div className={styles.detailBox}>
+          <img
+            src={movie.medium_cover_image}
+            alt={movie.title}
+            style={{ width: 200, marginBottom: 10 }}
+          ></img>
+
+          <a
+            href={movie.url}
+            className={styles.download} // 스타일 적용을 위해 className 사용
+            target='_blank' // 새 탭에서 링크 열기
+            rel='noopener noreferrer' // 보안 위험 방지
+          >
+            Download
+          </a>
+          <div className={styles.details}>
+            <strong>Rating:</strong> {movie.rating}
+            <p>
+              <strong>RunTime:</strong> {movie.runtime} minutes
+            </p>
+            <p>
+              <strong>genres:</strong> {movie.genres.join(', ')}
+            </p>
+            <p>
+              <strong>Intro:</strong>{' '}
+              {movie.description_intro === ''
+                ? 'null'
+                : movie.description_intro}
+            </p>
+          </div>
+        </div>
       ) : (
         <div>
           <h1>Loading...</h1>

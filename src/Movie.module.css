@@ -1,23 +1,53 @@
-.title {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-size: 18px;
-}
 .container {
   padding: 20px; /* 상, 우, 하, 좌 모든 방향에 20px의 패딩을 적용 */
 }
 .detailContainer {
-  /* 배경색 */
+  height: 100vh;
   color: #333; /* 글자색 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
   margin: 0;
+  padding: 20px;
+}
+.detailBox {
+  border: 2px solid white; /* 흰색 테두리 */
+  padding: 40px;
+  width: 700px;
+  border-radius: 10px; /* 모서리를 둥글게 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2; /* 다른 요소 위에 오도록 z-index 설정 */
+}
+.download {
+  background-color: rgb(56, 189, 56);
+  font-size: large;
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  padding: 3px;
+  font-weight: 800;
+  border: 1px solid rgb(45, 170, 45);
+  margin-bottom: 6px;
+}
+.details {
+  color: white;
+  background-color: #3333335d;
+  padding: 10px;
+  border: 2px;
+  border-radius: 15px;
 }
 html {
-  background-color: #f1f1ee;
-  margin: 10;
-  padding: 0;
+  background-color: #f0f0f0;
 }
 body {
-  margin: 50;
+  margin: 0;
+  background-color: #f0f0f0;
 }
 .movie {
   display: flex;
@@ -27,6 +57,9 @@ body {
   max-width: 250px; /* 예시로 설정한 최대 너비, 실제 이미지 크기에 맞춰 조정해주세요 */
   margin: 0 auto; /* 컨테이너를 중앙에 배치 */
   max-height: 500px;
+}
+.movie:hover {
+  transform: scale(1.05);
 }
 .mov {
   margin: 10px auto;
@@ -71,9 +104,6 @@ body {
   overflow: hidden; /* 내용이 넘칠 경우 숨김 */
   white-space: nowrap; /* 텍스트를 한 줄로 표시 */
   text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
-}
-.movieDetail {
-  text-align: center;
 }
 .movieSearch {
   /* 여기에 movieSearch의 스타일을 정의합니다 */
