@@ -1,54 +1,27 @@
+:root {
+  --background-color-dark: black;
+  --background-color-light: whitesmoke;
+  --text-color-dark: whitesmoke;
+  --text-color-light: black;
+}
 .container {
   padding: 20px; /* 상, 우, 하, 좌 모든 방향에 20px의 패딩을 적용 */
+  color: whitesmoke;
 }
-.detailContainer {
-  height: 100vh;
-  color: #333; /* 글자색 */
+
+.lightContainer {
+  background-color: whitesmoke; /* Light background */
+  color: black; /* Dark text */
+}
+.header {
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-size: cover;
-  margin: 0;
+  justify-content: center; /* 가운데 정렬 */
+  align-items: center;
   padding: 20px;
+  width: 100%; /* header의 너비를 전체 페이지로 설정 */
 }
-.detailBox {
-  border: 2px solid white; /* 흰색 테두리 */
-  padding: 40px;
-  width: 700px;
-  border-radius: 10px; /* 모서리를 둥글게 */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 2; /* 다른 요소 위에 오도록 z-index 설정 */
-}
-.download {
-  background-color: rgb(56, 189, 56);
-  font-size: large;
-  width: 100px;
-  height: 30px;
-  border-radius: 5px;
-  text-align: center;
-  color: white;
-  text-decoration: none;
-  padding: 3px;
-  font-weight: 800;
-  border: 1px solid rgb(45, 170, 45);
-  margin-bottom: 6px;
-}
-.details {
-  color: white;
-  background-color: #3333335d;
-  padding: 10px;
-  border: 2px;
-  border-radius: 15px;
-}
-html {
-  background-color: #f0f0f0;
-}
-body {
-  margin: 0;
-  background-color: #f0f0f0;
-}
+
 .movie {
   display: flex;
   flex-direction: column;
@@ -71,11 +44,16 @@ body {
   object-fit: cover; /* 이미지 비율을 유지하면서 컨테이너를 꽉 채움 */
 }
 .back {
+  position: fixed; /* 뷰포트에 대해 고정된 위치 */
+  top: 20px; /* 상단으로부터 20px */
+  left: 20px; /* 좌측으로부터 20px */
   color: white;
-  font-size: x-large;
+  font-size: large;
   background-color: #3333335d;
   border: 0;
-  transform: translate(-400px, -650px);
+  padding: 10px; /* 적당한 패딩 추가 */
+  cursor: pointer; /* 클릭 가능한 요소임을 나타내는 커서 모양 */
+  z-index: 1000; /* 다른 요소들 위에 오도록 z-index 설정 */
 }
 .coverText {
   height: auto;
@@ -118,6 +96,12 @@ body {
   margin: 20px 0;
   border: 1px solid #ccc;
   border-radius: 4px;
+  justify-content: center;
+}
+.input {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .moviesContainer {
   display: grid;
@@ -141,30 +125,60 @@ body {
   }
 }
 .button {
-  transform: translate(30%);
+  transform: translate(20%, 70%);
   background-color: #333;
   color: #f1f1ee;
   padding: 3px;
   padding-left: 6px;
   padding-right: 6px;
+  height: 30px;
 }
 .genreContainer {
-  width: 600px;
-  padding-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* 장르 버튼을 가운데 정렬합니다. */
+  gap: 10px; /* 버튼 사이의 간격 */
+  margin: 20px 0; /* 상하 여백 */
+  width: 100%;
+  background-color: black;
 }
-.genreButton {
-  border: 0;
-  font-size: large;
+.lightgenreContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* 장르 버튼을 가운데 정렬합니다. */
+  gap: 10px; /* 버튼 사이의 간격 */
+  margin: 20px 0; /* 상하 여백 */
+  width: 100%;
+  background-color: whitesmoke;
 }
 .genreButton {
   /*이 속성은 버튼의 배경색(background-color)과 크기 변형(transform)이 변할 때 
   부드럽게 전환되도록 합니다. 0.3s는 전환에 0.3초가 걸린다는 것을 의미하며, 
   ease는 시작과 끝에 느리게, 중간에는 빠르게 전환되는 타이밍 함수입니다.*/
   transition: background-color 0.3s ease, transform 0.3s ease;
-  /* Other styling here */
+  border: 0;
+  font-size: large;
+  background-color: black;
+  color: whitesmoke;
+  text-align: 'center';
+}
+.lightgenreButton {
+  /*이 속성은 버튼의 배경색(background-color)과 크기 변형(transform)이 변할 때 
+  부드럽게 전환되도록 합니다. 0.3s는 전환에 0.3초가 걸린다는 것을 의미하며, 
+  ease는 시작과 끝에 느리게, 중간에는 빠르게 전환되는 타이밍 함수입니다.*/
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border: 0;
+  font-size: large;
+  color: black;
+  background-color: whitesmoke;
+  text-align: 'center';
 }
 
 .genreButton:hover {
+  background-color: #444444ad; /* Change to your preferred hover background color */
+  transform: scale(1.05); /* Slightly enlarges the button */
+}
+.lightgenreButton:hover {
   background-color: #444444ad; /* Change to your preferred hover background color */
   transform: scale(1.05); /* Slightly enlarges the button */
 }
@@ -172,4 +186,53 @@ body {
 .selectedGenre {
   background-color: #6666666b; /* Selected genre button background color */
   /* Other styling for selected genre button */
+}
+.detailContainer {
+  height: 100vh;
+  color: #333; /* 글자색 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  margin: 0;
+  padding: 20px;
+}
+.detailBox {
+  border: 2px solid white; /* 흰색 테두리 */
+  padding: 40px;
+  width: 700px;
+  border-radius: 10px; /* 모서리를 둥글게 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2; /* 다른 요소 위에 오도록 z-index 설정 */
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: whitesmoke;
+}
+.download {
+  background-color: rgb(56, 189, 56);
+  font-size: large;
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  padding: 3px;
+  font-weight: 800;
+  border: 1px solid rgb(45, 170, 45);
+  margin-bottom: 6px;
+}
+.details {
+  color: white;
+  background-color: #3333335d;
+  padding: 10px;
+  border: 2px;
+  border-radius: 15px;
+  font-size: large;
 }

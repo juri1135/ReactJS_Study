@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import styles from '../Movie.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
+import styles from '../Movie.module.css';
 function Detail() {
   //const x=useParams()로 하면 {id:'num'} 형태로 나오는데
   //const {id}=useParams()로 하면 그냥 id값만 딱! 나옴
@@ -18,12 +18,12 @@ function Detail() {
     setMovieDetails(json);
     setMovie(json.data.movie);
   };
-  const goBack = () => {
-    navigate(-1);
-  };
   useEffect(() => {
     getMovie();
   }, [id]);
+  const goBack = () => {
+    navigate(-1); // 이전 페이지로 돌아가기
+  };
   const backgroundStyle = movie
     ? { backgroundImage: `url(${movie.background_image_original})` }
     : {};
@@ -31,45 +31,46 @@ function Detail() {
   return (
     <div className={styles.detailContainer} style={backgroundStyle}>
       {movieDetails ? (
-        <button onClick={goBack} className={styles.back}>
-          ◀ Back
-        </button>
-      ) : null}
+        <>
+          {
+            <button onClick={goBack} className={styles.back}>
+              ◀ Back
+            </button>
+          }
+          <div className={styles.detailBox}>
+            <img
+              src={movie.medium_cover_image}
+              alt={movie.title}
+              style={{ width: 300, marginBottom: 10 }}
+            ></img>
 
-      {movieDetails ? (
-        <div className={styles.detailBox}>
-          <img
-            src={movie.medium_cover_image}
-            alt={movie.title}
-            style={{ width: 200, marginBottom: 10 }}
-          ></img>
-
-          <a
-            href={movie.url}
-            className={styles.download} // 스타일 적용을 위해 className 사용
-            target='_blank' // 새 탭에서 링크 열기
-            rel='noopener noreferrer' // 보안 위험 방지
-          >
-            Download
-          </a>
-          <div className={styles.details}>
-            <strong>Rating:</strong> {movie.rating}
-            <p>
-              <strong>RunTime:</strong> {movie.runtime} minutes
-            </p>
-            <p>
-              <strong>genres:</strong> {movie.genres.join(', ')}
-            </p>
-            <p>
-              <strong>Intro:</strong>{' '}
-              {movie.description_intro === ''
-                ? 'null'
-                : movie.description_intro}
-            </p>
+            <a
+              href={movie.url}
+              className={styles.download} // 스타일 적용을 위해 className 사용
+              target='_blank' // 새 탭에서 링크 열기
+              rel='noopener noreferrer' // 보안 위험 방지
+            >
+              Download
+            </a>
+            <div className={styles.details}>
+              <strong>Rating:</strong> {movie.rating}
+              <p>
+                <strong>RunTime:</strong> {movie.runtime} minutes
+              </p>
+              <p>
+                <strong>genres:</strong> {movie.genres.join(', ')}
+              </p>
+              <p>
+                <strong>Intro:</strong>{' '}
+                {movie.description_intro === ''
+                  ? 'null'
+                  : movie.description_intro}
+              </p>
+            </div>
           </div>
-        </div>
+        </>
       ) : (
-        <div>
+        <div className={styles.loading}>
           <h1>Loading...</h1>
         </div> // Display a loading message or spinner before data is fetched
       )}

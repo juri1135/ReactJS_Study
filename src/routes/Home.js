@@ -1,7 +1,9 @@
 import Movie from '../components/Movie';
 import { useState, useEffect } from 'react';
 import styles from '../Movie.module.css';
+import { Link, useLocation } from 'react-router-dom';
 function Home() {
+  const location = useLocation(); // 현재 위치를 추적
   const [loading, setLoading] = useState(true);
   const [movies, setMovies] = useState([]);
   const [title, setTitle] = useState('');
@@ -9,15 +11,7 @@ function Home() {
   const [up, setUp] = useState(false); // 추가: 정렬 방향 관리 (true: 오름차순, false: 내림차순)
   const [selectedGenre, setSelectedGenre] = useState('All');
   const [allGenres, setAllGenres] = useState([]);
-  const [isHovering, setIsHovering] = useState(false);
-
-  const handleMouseOver = () => {
-    setIsHovering(true);
-  };
-
-  const handleMouseOut = () => {
-    setIsHovering(false);
-  };
+  const [mode, setMode] = useState(['drak']);
 
   const onClick = () => {
     if (up) {
@@ -43,9 +37,10 @@ function Home() {
 
   useEffect(() => {
     const getMovies = async () => {
+      setLoading(true);
       const json = await (
         await fetch(
-          'https://yts.mx/api/v2/list_movies.json?minimum_rating=4&sort_by=year'
+          'https://yts.mx/api/v2/list_movies.json?minimum_rating=5&sort_by=year'
         )
       ).json();
       setMovies(json.data.movies);
@@ -55,7 +50,18 @@ function Home() {
       setLoading(false);
     };
     getMovies();
-  }, []);
+    if (mode === 'dark') {
+      document.body.style.backgroundColor = 'var(--background-color-dark)';
+      document.body.style.color = 'var(--text-color-dark)';
+      document.body.style.margin = 0;
+    } else {
+      document.body.style.backgroundColor = 'var(--background-color-light)';
+      document.body.style.color = 'var(--text-color-light)';
+      document.body.style.margin = 0;
+    }
+    const savedMode = localStorage.getItem('mode') || 'dark';
+    setMode(savedMode);
+  }, [location.pathname, mode]);
   const selectGenre = (genre) => {
     setSelectedGenre(genre);
   };
@@ -75,28 +81,73 @@ function Home() {
     );
   }
   return (
-    <div className={styles.container}>
-      <h1>Movie list🎞️</h1>
-      <hr />
+    <div
+      className={`${styles.container} ${
+        mode === 'light' ? styles.lightContainer : ''
+      }`}
+    >
+      <div className={styles.header}>
+        <Link
+          basename={process.env.PUBLIC_URL}
+          to='/'
+          style={{ textDecoration: 'none', textAlign: 'center' }}
+        >
+          <h1
+            style={{
+              color: 'red',
+              fontSize: '3rem',
+              marginTop: 5,
+              marginBottom: 5,
+              fontWeight: 1000,
+            }}
+          >
+            Juriflix🎞️
+          </h1>
+        </Link>
+
+        <button
+          onClick={() => {
+            setMode(mode === 'dark' ? 'light' : 'dark');
+            const newMode = mode === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('mode', newMode); // 상태를 localStorage에 저장
+          }}
+          className={styles.themeToggle}
+          style={{
+            background: 'transparent' /* 배경색 투명 */,
+            border: 'none' /* 테두리 없음 */,
+            fontSize: 'large',
+          }}
+        >
+          {mode === 'dark' ? '🌞' : '🌚'}
+        </button>
+      </div>
       {loading ? null : (
         <>
-          <input
-            className={styles.movieSearch}
-            type='text'
-            placeholder='Search movies...'
-            onChange={onChange}
-          />
-          <button onClick={onClick} className={styles.button}>
-            {up ? '▲' : '▼'}
-          </button>
-          <div className={styles.genreContainer}>
+          <div className={styles.input}>
+            <input
+              className={styles.movieSearch}
+              type='text'
+              placeholder='Search movies...'
+              onChange={onChange}
+            />
+            <button onClick={onClick} className={styles.button}>
+              {up ? '▲' : '▼'}
+            </button>
+          </div>
+          <div
+            className={`${
+              mode === 'light'
+                ? styles.lightgenreContainer
+                : styles.genreContainer
+            }`}
+          >
             {allGenres.map((genre) => (
               <button
                 key={genre}
                 onClick={() => selectGenre(genre)}
-                className={`${styles.genreButton} ${
-                  selectedGenre === genre ? styles.selectedGenre : ''
-                }`}
+                className={`${
+                  mode === 'dark' ? styles.genreButton : styles.lightgenreButton
+                } ${selectedGenre === genre ? styles.selectedGenre : ''}`}
               >
                 {genre}
               </button>
@@ -105,7 +156,7 @@ function Home() {
         </>
       )}
       {loading ? (
-        <h1>Loading...🔃</h1>
+        <h1 className={styles.loading}>Loading...</h1>
       ) : (
         <div className={styles.moviesContainer}>
           {displayedMovies.map((movie) => (
