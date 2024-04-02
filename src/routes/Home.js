@@ -12,41 +12,42 @@ function Home() {
   const [selectedGenre, setSelectedGenre] = useState('All');
   const [allGenres, setAllGenres] = useState([]);
   const [mode, setMode] = useState(['drak']);
+  const [genres, setGenres] = useState([]);
 
-  const onClick = () => {
-    if (up) {
-      // 현재 오름차순이면 내림차순으로 정렬
-      setMovies((currentMovies) =>
-        [...currentMovies].sort((a, b) => b.rating - a.rating)
-      );
-    } else {
-      // 현재 내림차순이면 오름차순으로 정렬
-      setMovies((currentMovies) =>
-        [...currentMovies].sort((a, b) => a.rating - b.rating)
-      );
-    }
-    setUp(!up); // 정렬 방향 반전
-    setSorted(true); // 정렬된 상태로 설정
-  };
-  const onChange = (event) => {
-    setTitle(event.target.value);
-  };
+  useEffect(() => {
+    const fetchGenres = async () => {
+      const url = `https://api.themoviedb.org/3/genre/movie/list?api_key=c50be32b4ea0f1614f09c0d548130381&language=en-US`;
+      const response = await fetch(url);
+      const json = await response.json();
+      setGenres([{ id: 'All', name: 'All' }, ...json.genres]);
+    };
 
-  //useEffect!! 기억나지!!! 페이지 전체 랜더링하면 개손해니까 getMovies는 맨 첨에만 랜더링하고 재랜더링 안 해!
-  //getMovies는 말 그대로 url 받아서 페이지 이동했을 때 id 받는 것만 하면 되니까 그 후에는 다시 쓸 일이 없음;;
+    fetchGenres();
+  }, []);
 
   useEffect(() => {
     const getMovies = async () => {
       setLoading(true);
       const json = await (
         await fetch(
-          'https://yts.mx/api/v2/list_movies.json?minimum_rating=5&sort_by=year'
+          'https://api.themoviedb.org/3/discover/movie?api_key=c50be32b4ea0f1614f09c0d548130381'
         )
       ).json();
-      setMovies(json.data.movies);
-      // 모든 영화에서 장르 추출 후 중복 제거하여 상태 설정
-      const genres = new Set(json.data.movies.flatMap((movie) => movie.genres));
-      setAllGenres(['All', ...genres]);
+      setMovies(json.results);
+
+      // 장르 ID 배열을 실제 장르 이름으로 변환
+      const allGenreNames = json.results.map((movie) =>
+        movie.genre_ids
+          .map((genreId) => {
+            const genre = genres.find((g) => g.id === genreId);
+            return genre ? genre.name : 'Unknown';
+          })
+          .join(', ')
+      );
+
+      // 중복을 제거하여 모든 장르를 설정
+      const uniqueGenres = [...new Set(allGenreNames.flat())];
+      setAllGenres(['All', ...uniqueGenres]);
       setLoading(false);
     };
     getMovies();
@@ -62,16 +63,36 @@ function Home() {
     const savedMode = localStorage.getItem('mode') || 'dark';
     setMode(savedMode);
   }, [location.pathname, mode]);
-  const selectGenre = (genre) => {
-    setSelectedGenre(genre);
+  const onClick = () => {
+    if (up) {
+      // 현재 오름차순이면 내림차순으로 정렬
+      setMovies((currentMovies) =>
+        [...currentMovies].sort((a, b) => b.vote_average - a.vote_average)
+      );
+    } else {
+      // 현재 내림차순이면 오름차순으로 정렬
+      setMovies((currentMovies) =>
+        [...currentMovies].sort((a, b) => a.vote_average - b.vote_average)
+      );
+    }
+    setUp(!up); // 정렬 방향 반전
+    setSorted(true); // 정렬된 상태로 설정
   };
+  const onChange = (event) => {
+    setTitle(event.target.value);
+  };
+
+  //useEffect!! 기억나지!!! 페이지 전체 랜더링하면 개손해니까 getMovies는 맨 첨에만 랜더링하고 재랜더링 안 해!
+  //getMovies는 말 그대로 url 받아서 페이지 이동했을 때 id 받는 것만 하면 되니까 그 후에는 다시 쓸 일이 없음;;
+
   //사용자가 입력한 제목 필터링하기 영화 제목들 다 소문자로 바꾸고
   //전체 영화 제목에서 사용자가 입력한 문자가 포함되면 그 영화 여기 다 담아
   // 필터링된 영화 목록, 정렬된 상태가 아니라면 원본 목록 사용
   // Combine title and genre filtering into one step, applying sorting if needed
   let displayedMovies = movies.filter(
     (movie) =>
-      (selectedGenre === 'All' || movie.genres.includes(selectedGenre)) &&
+      (selectedGenre === 'All' ||
+        movie.genre_ids.includes(parseInt(selectedGenre))) &&
       movie.title.toLowerCase().includes(title.toLowerCase())
   );
 
@@ -80,6 +101,9 @@ function Home() {
       up ? a.rating - b.rating : b.rating - a.rating
     );
   }
+  const handleGenreChange = (genreId) => {
+    setSelectedGenre(genreId);
+  };
   return (
     <div
       className={`${styles.container} ${
@@ -141,15 +165,17 @@ function Home() {
                 : styles.genreContainer
             }`}
           >
-            {allGenres.map((genre) => (
+            {genres.map((genre) => (
               <button
-                key={genre}
-                onClick={() => selectGenre(genre)}
                 className={`${
-                  mode === 'dark' ? styles.genreButton : styles.lightgenreButton
-                } ${selectedGenre === genre ? styles.selectedGenre : ''}`}
+                  mode === 'light'
+                    ? styles.lightgenreButton
+                    : styles.genreButton
+                }`}
+                key={genre.id}
+                onClick={() => handleGenreChange(genre.id)}
               >
-                {genre}
+                {genre.name}
               </button>
             ))}
           </div>
@@ -163,13 +189,14 @@ function Home() {
             <Movie
               key={movie.id}
               id={movie.id}
-              title={movie.title}
-              cover_image={movie.medium_cover_image}
-              genres={movie.genres}
-              summary={movie.summary}
-              rating={movie.rating}
-              runtime={movie.runtime}
-              day={movie.year}
+              title={movie.original_title}
+              cover_image={
+                'https://image.tmdb.org/t/p/original' + movie.poster_path
+              }
+              genres={allGenres}
+              summary={movie.overview}
+              rating={movie.vote_average}
+              day={movie.release_date}
             />
           ))}
         </div>
@@ -177,4 +204,5 @@ function Home() {
     </div>
   );
 }
+
 export default Home;
