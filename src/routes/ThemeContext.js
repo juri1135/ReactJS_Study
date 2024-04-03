@@ -9,6 +9,25 @@ export function useTheme() {
 
 export function ThemeProvider({ children }) {
   const [mode, setMode] = useState('dark');
+  if (mode === 'dark') {
+    document.documentElement.style.setProperty(
+      '--background-color',
+      'var(--background-color-dark)'
+    );
+    document.documentElement.style.setProperty(
+      '--text-color',
+      'var(--text-color-dark)'
+    );
+  } else {
+    document.documentElement.style.setProperty(
+      '--background-color',
+      'var(--background-color-light)'
+    );
+    document.documentElement.style.setProperty(
+      '--text-color',
+      'var(--text-color-light)'
+    );
+  }
 
   const toggleMode = () => {
     const newMode = mode === 'dark' ? 'light' : 'dark';

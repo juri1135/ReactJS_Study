@@ -4,6 +4,11 @@
   --text-color-dark: whitesmoke;
   --text-color-light: black;
 }
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
 .container {
   padding: 20px; /* 상, 우, 하, 좌 모든 방향에 20px의 패딩을 적용 */
   color: whitesmoke;
