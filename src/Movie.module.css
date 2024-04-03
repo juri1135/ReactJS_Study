@@ -15,13 +15,35 @@
 }
 .header {
   display: flex;
-  align-items: center;
-  justify-content: center; /* 가운데 정렬 */
-  align-items: center;
-  padding: 20px;
+  padding-left: 20px;
+  padding-top: 20px;
   width: 100%; /* header의 너비를 전체 페이지로 설정 */
 }
-
+.movieORtv {
+  transform: translate(20%, 35%);
+}
+.movieOR {
+  color: red;
+  text-decoration: none;
+  padding-left: 5px;
+  font-size: large;
+  font-weight: 800;
+}
+.tvOR {
+  color: red;
+  text-decoration: none;
+  padding-left: 15px;
+  font-size: large;
+  font-weight: 800;
+  transform: translate(-50%, 257%);
+}
+.movieOR:hover {
+  color: rgb(238, 158, 10);
+}
+.tvOR:hover {
+  color: rgb(238, 158, 10);
+  transform: scale(1.2);
+}
 .movie {
   display: flex;
   flex-direction: column;
@@ -102,7 +124,7 @@
 .input {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  margin-left: 20px;
 }
 .moviesContainer {
   display: grid;
